@@ -15,7 +15,10 @@ func Create(c *gin.Context) {
 	userId := c.GetUint("user")
 	//获取参数
 	var post model.Post
-	fileids := c.PostFormArray("fileids")
+	fileids, ok := c.GetPostFormArray("fileids")
+	if !ok {
+		log.Println("未获取到一个参数")
+	}
 	log.Println(fileids)
 	if err := c.ShouldBind(&post); err != nil {
 		response.Failed(c, 400, "参数错误", "")
