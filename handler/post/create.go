@@ -14,17 +14,18 @@ func Create(c *gin.Context) {
 	db := database.Get()
 	userId := c.GetUint("user")
 	//获取参数
-	var post model.Post
-	fileids := c.PostFormArray("fileids")
+	var get_post model.GetPost
+	//fileids := c.PostFormArray("fileids")
 	//err := c.ShouldBind(&fileids)
 	//if err != nil {
 	//	log.Println("获取数组出错!", err)
 	//}
-	log.Println(fileids)
-	if err := c.ShouldBind(&post); err != nil {
+	//log.Println(fileids)
+	if err := c.ShouldBind(&get_post); err != nil {
 		response.Failed(c, 400, "参数错误", "")
 		return
 	}
+	log.Println(get_post.FileId)
 	// avatar := c.PostForm("avatar")
 	// title := c.PostForm("title")
 	// qq := c.BindJSON("qq")
@@ -33,12 +34,24 @@ func Create(c *gin.Context) {
 	// price := c.PostForm("price")
 	// location := c.PostForm("location")
 	// tag := c.PostForm("tag")
+	var post = model.Post{
+		UserId:   get_post.UserId,
+		Avatar:   get_post.Avatar,
+		Title:    get_post.Title,
+		Content:  get_post.Content,
+		Price:    get_post.Price,
+		Location: get_post.Location,
+		Thumb:    get_post.Thumb,
+		Reply:    get_post.Reply,
+		Follow:   get_post.Follow,
+		Tag:      get_post.Tag,
+	}
 	log.Println("创建帖子的tag为", post.Tag)
 	if post.Content == "" || post.Title == "" {
 		response.Failed(c, 400, "content或title未给出", nil)
 		return
 	}
-	data, err := json.Marshal(fileids)
+	data, err := json.Marshal(get_post.Fileids)
 	if err != nil {
 		response.Failed(c, 400, "转json失败", nil)
 		return

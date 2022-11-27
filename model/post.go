@@ -23,6 +23,23 @@ type Post struct {
 	Tag      string `json:"tag" postform:"tag"`
 }
 
+type GetPost struct {
+	gorm.Model
+	//UserName string `json:"userName" postform:"userName"` //创建帖子的人
+	Fileids  []string `json:"fileids" postform:"fileids" `
+	UserId   uint     `json:"userId" postform:"userId" gorm:"user_id"`
+	FileId   string   `json:"fileid" postform:"fileid" gorm:"column:fileid"`
+	Avatar   string   `json:"avatar" postform:"avatar"`
+	Title    string   `json:"title" postform:"title" binding:"required"`
+	Content  string   `json:"content" postform:"content" binding:"required"`
+	Price    string   `json:"price" postform:"price"`
+	Location string   `json:"location" postform:"location"`
+	Thumb    int      `json:"thumb" postform:"thumb"`
+	Reply    int      `json:"reply" postform:"reply"`
+	Follow   int      `json:"follow" postform:"follow"`
+	Tag      string   `json:"tag" postform:"tag"`
+}
+
 // 返回响应的帖子
 type ResponsePost struct {
 	ID        uint `gorm:"primarykey"`
@@ -63,8 +80,4 @@ type Report struct {
 	Username string `json:"Username" postform:"Username"`
 	Postid   uint   `json:"postid" postform:"postid" bind:"required"`
 	Content  string `json:"content" postform:"content" bind:"required"`
-}
-
-type PostIds struct {
-	Fileids []string `json:"fileids" form:"fileids"`
 }
