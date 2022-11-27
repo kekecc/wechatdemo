@@ -48,12 +48,12 @@ func ReturnPostList(c *gin.Context, posts *[]model.Post, userid uint) {
 			responsePosts[i].UserName = userName
 		}
 		responsePosts[i].ID = (*posts)[i].ID
-		responsePosts[i].Avatar = (*posts)[i].Avatar
+		responsePosts[i].Avatar, responsePosts[i].QQ, responsePosts[i].Wx = databaseuser.GetUserDetailById((*posts)[i].UserId)
 		responsePosts[i].Title = (*posts)[i].Title
-		var ok error
-		if responsePosts[i].QQ, responsePosts[i].Wx, ok = databaseuser.GetUserqqAndWxByID((*posts)[i].ID); ok != nil {
-			log.Println("获取用户qq,wx出错")
-		}
+		//var ok error
+		//if responsePosts[i].QQ, responsePosts[i].Wx, ok = databaseuser.GetUserqqAndWxByID((*posts)[i].ID); ok != nil {
+		//	log.Println("获取用户qq,wx出错")
+		//}
 		responsePosts[i].Content = (*posts)[i].Content
 		responsePosts[i].Price = (*posts)[i].Price
 		responsePosts[i].Location = (*posts)[i].Location
@@ -83,12 +83,13 @@ func ReturnPost(c *gin.Context, post *model.Post, userid uint) {
 		responsePost.UserName = userName
 	}
 	responsePost.ID = post.ID
-	responsePost.Avatar = post.Avatar
+	//responsePost.Avatar = post.Avatar
 	responsePost.Title = post.Title
-	var ok error
-	if responsePost.QQ, responsePost.Wx, ok = databaseuser.GetUserqqAndWxByID(post.ID); ok != nil {
-		log.Println("获取用户qq,wx出错")
-	}
+	responsePost.Avatar, responsePost.QQ, responsePost.Wx = databaseuser.GetUserDetailById(userid)
+	//var ok error
+	//if responsePost.QQ, responsePost.Wx, ok = databaseuser.GetUserqqAndWxByID(post.ID); ok != nil {
+	//	log.Println("获取用户qq,wx出错")
+	//}
 	responsePost.Content = post.Content
 	responsePost.Price = post.Price
 	responsePost.Location = post.Location

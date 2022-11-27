@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"wechatdemo/database"
+	databaseuser "wechatdemo/database/user"
 	"wechatdemo/model"
 	"wechatdemo/response"
 
@@ -34,9 +35,10 @@ func Create(c *gin.Context) {
 	// price := c.PostForm("price")
 	// location := c.PostForm("location")
 	// tag := c.PostForm("tag")
+	my_avatar, _, _ := databaseuser.GetUserDetailById(userId)
 	var post = model.Post{
 		UserId:   get_post.UserId,
-		Avatar:   get_post.Avatar,
+		Avatar:   my_avatar,
 		Title:    get_post.Title,
 		Content:  get_post.Content,
 		Price:    get_post.Price,
