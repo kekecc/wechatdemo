@@ -33,7 +33,7 @@ func GetCommentListByMyself(c *gin.Context) {
 		} else {
 			continue
 		}
-		//replyComment.Fileid, replyComment.QQ, replyComment.Wx = databaseuser.GetUserDetailById(comment.UserId)
+		replyComment.Fileid, replyComment.QQ, replyComment.Wx = databaseuser.GetUserDetailById(comment.UserId)
 		replyComments = append(replyComments, replyComment)
 	}
 	response.Success(c, 200, "成功", replyComments)
