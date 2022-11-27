@@ -25,6 +25,7 @@ func InitRoute() *gin.Engine {
 		user.GET("/GetUserPostsSum", middle.AuthJWT(), users.GetUserPostsSum)
 		user.GET("/GetUserCommentsSum", middle.AuthJWT(), users.GetUserCommentsSum)
 		user.GET("/GetUserFollowsSum", middle.AuthJWT(), users.GetUserFollowsSum)
+		user.GET("/GetUserImage", middle.AuthJWT(), users.GetUserImage)
 	}
 	post := route.Group("/post")
 	{

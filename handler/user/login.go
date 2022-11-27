@@ -68,7 +68,6 @@ func ReorLo(c *gin.Context) {
 			}
 
 			DB.Create(&user) //存入数据库
-
 			//c.JSON(http.StatusOK, gin.H{"code": 200, "msg": "注册成功!"})
 			token, err := verify.ReleaseToken(user) //获取token
 			if err != nil {
