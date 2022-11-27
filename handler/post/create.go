@@ -15,8 +15,8 @@ func Create(c *gin.Context) {
 	userId := c.GetUint("user")
 	//获取参数
 	var post model.Post
-	var fileids []string
-	err := c.ShouldBindJSON(&fileids)
+	var fileids model.PostIds
+	err := c.ShouldBind(&fileids)
 	if err != nil {
 		log.Println("获取数组出错!", err)
 	}
@@ -38,7 +38,7 @@ func Create(c *gin.Context) {
 		response.Failed(c, 400, "content或title未给出", nil)
 		return
 	}
-	data, err := json.Marshal(fileids)
+	data, err := json.Marshal(fileids.Fileids)
 	if err != nil {
 		response.Failed(c, 400, "转json失败", nil)
 		return

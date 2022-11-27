@@ -64,3 +64,7 @@ type Report struct {
 	Postid   uint   `json:"postid" postform:"postid" bind:"required"`
 	Content  string `json:"content" postform:"content" bind:"required"`
 }
+
+type PostIds struct {
+	Fileids []string `json:"fileids" form:"fileids"`
+}
