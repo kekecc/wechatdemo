@@ -21,6 +21,9 @@ func UpdateUserDetail(c *gin.Context) {
 		response.Failed(c, 400, "参数错误", nil)
 		return
 	}
+	if json["fileid"] != nil {
+		log.Println(json["fileid"])
+	}
 	userid := c.GetUint("user")
 	db := database.Get()
 	if userid != 0 {
