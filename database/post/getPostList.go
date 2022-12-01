@@ -48,7 +48,7 @@ func ReturnPostList(c *gin.Context, posts *[]model.Post, userid uint) {
 			responsePosts[i].UserName = userName
 		}
 		responsePosts[i].ID = (*posts)[i].ID
-		responsePosts[i].Avatar, responsePosts[i].QQ, responsePosts[i].Wx = databaseuser.GetUserDetailById((*posts)[i].UserId)
+		responsePosts[i].Avatar, responsePosts[i].QQ, responsePosts[i].Wx = databaseuser.GetUserDetailById((*posts)[i].UserId) //同步更新
 		responsePosts[i].Title = (*posts)[i].Title
 		//var ok error
 		//if responsePosts[i].QQ, responsePosts[i].Wx, ok = databaseuser.GetUserqqAndWxByID((*posts)[i].ID); ok != nil {
@@ -85,7 +85,7 @@ func ReturnPost(c *gin.Context, post *model.Post, userid uint) {
 	responsePost.ID = post.ID
 	//responsePost.Avatar = post.Avatar
 	responsePost.Title = post.Title
-	responsePost.Avatar, responsePost.QQ, responsePost.Wx = databaseuser.GetUserDetailById(userid)
+	responsePost.Avatar, responsePost.QQ, responsePost.Wx = databaseuser.GetUserDetailById(userid) //同步更新
 	//var ok error
 	//if responsePost.QQ, responsePost.Wx, ok = databaseuser.GetUserqqAndWxByID(post.ID); ok != nil {
 	//	log.Println("获取用户qq,wx出错")

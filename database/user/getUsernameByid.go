@@ -44,3 +44,4 @@ func GetUserDetailById(id uint) (string, string, string) {
 	}
 	return user.Fileid, user.QQ, user.Wx
 }
+
