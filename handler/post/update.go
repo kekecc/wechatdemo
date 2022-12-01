@@ -53,8 +53,9 @@ func Update(c *gin.Context) {
 	delete(jsons, "fileids")
 	//更新
 	db.Model(&post).Updates(jsons)
-	err = db.Model(&post).Update("fileids", string(data)).Error
+	err = db.Model(&post).Update("fileid", string(data)).Error
 	if err != nil {
+		log.Println(err.Error())
 		response.Failed(c, 400, "更新失败", err)
 	}
 	response.Success(c, 200, "更新成功!", post)
