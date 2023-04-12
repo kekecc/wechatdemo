@@ -34,7 +34,7 @@ docker run -d --restart=always \
 -v /docker/nginx/conf.d:/etc/nginx/conf.d \
 -v /docker/nginx/logs:/var/log/nginx \
 -v /docker/nginx/cert:/etc/nginx/cert \
-nginx:1.19.4 
+nginx
            
 //tips:
 //在挂载数据卷之前得创建，如上示例，并在给定卷中填写配置文件，如反向代理、https等
