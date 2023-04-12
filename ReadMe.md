@@ -39,6 +39,7 @@ nginx:1.19.4
 //tips:
 //在挂载数据卷之前得创建，如上示例，并在给定卷中填写配置文件，如反向代理、https等
 ```
+参考 [快速配置nginx](https://www.quanxiaoha.com/docker/docker-install-nginx.html)
 
 4. 回到得到的项目镜像，把它启动
 
