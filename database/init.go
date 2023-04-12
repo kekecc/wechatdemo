@@ -2,7 +2,6 @@ package database
 
 import (
 	"fmt"
-	"os"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -14,16 +13,16 @@ var dbInstance *gorm.DB
 
 func InitDB() error {
 
-	source := "%s:%s@tcp(%s)/%s?readTimeout=1500ms&writeTimeout=1500ms&charset=utf8&loc=Local&&parseTime=true"
-	user := os.Getenv("MYSQL_USERNAME")
-	pwd := os.Getenv("MYSQL_PASSWORD")
-	addr := os.Getenv("MYSQL_ADDRESS")
-	dataBase := os.Getenv("MYSQL_DATABASE")
-	if dataBase == "" {
-		dataBase = "golang_demo"
-	}
-	source = fmt.Sprintf(source, user, pwd, addr, dataBase)
-	fmt.Println("start init mysql with ", source)
+	source := "root:buqieryu@tcp(mysql:3306)/buqieryu?readTimeout=1500ms&writeTimeout=1500ms&charset=utf8&loc=Local&&parseTime=true"
+	// user := os.Getenv("MYSQL_USERNAME")
+	// pwd := os.Getenv("MYSQL_PASSWORD")
+	// addr := os.Getenv("MYSQL_ADDRESS")
+	// dataBase := os.Getenv("MYSQL_DATABASE")
+	// if dataBase == "" {
+	// 	dataBase = "golang_demo"
+	// }
+	// source = fmt.Sprintf(source, user, pwd, addr, dataBase)
+	// fmt.Println("start init mysql with ", source)
 
 	db, err := gorm.Open(mysql.Open(source), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
