@@ -22,6 +22,7 @@ func InitRoute() *gin.Engine {
 		user.POST("/getcode", users.GetVerifyCode)
 		user.GET("/getUserDetail", middle.AuthJWT(), users.GetUserDetail)
 		user.PUT("/updateUserDetail", middle.AuthJWT(), users.UpdateUserDetail)
+		user.PUT("/updateUserAvatar", middle.AuthJWT(), users.UpdateUserAvatar)
 		user.GET("/GetUserPostsSum", middle.AuthJWT(), users.GetUserPostsSum)
 		user.GET("/GetUserCommentsSum", middle.AuthJWT(), users.GetUserCommentsSum)
 		user.GET("/GetUserFollowsSum", middle.AuthJWT(), users.GetUserFollowsSum)
