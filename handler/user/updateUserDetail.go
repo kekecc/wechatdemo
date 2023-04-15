@@ -25,16 +25,18 @@ func UpdateUserAvatar(c *gin.Context) {
 	}
 	f.Close()
 
+	cos := utils.GetCos()
+	_url := cos.Object.GetObjectURL("avatar" + file.Filename)
 	userid := c.GetUint("user")
 	db := database.Get()
 	if userid != 0 {
-		err := db.Model(&model.User{}).Where("id = ?", userid).Update("fileid", file.Filename).Error
+		err := db.Model(&model.User{}).Where("id = ?", userid).Update("fileid", _url.String()).Error
 		if err != nil {
 			log.Println("更改失败", err)
 			response.Failed(c, 400, "更改失败", err)
 			return
 		}
-		response.Success(c, 200, "更改成功", file.Filename)
+		response.Success(c, 200, "更改成功", _url.String())
 	}
 }
 

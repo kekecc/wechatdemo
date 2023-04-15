@@ -66,8 +66,10 @@ func Create(c *gin.Context) {
 	files := forms.File["files"] // images
 	utils.UploadMutipy("posts", files)
 
+	cos := utils.GetCos()
 	for i, file := range files {
-		get_post.Fileids[i] = file.Filename
+		url := cos.Object.GetObjectURL("posts" + file.Filename)
+		get_post.Fileids[i] = url.String()
 	}
 
 	data, err := json.Marshal(get_post.Fileids)

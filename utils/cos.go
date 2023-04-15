@@ -3,6 +3,7 @@ package utils
 import (
 	"context"
 	"io"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -11,7 +12,7 @@ import (
 	"github.com/tencentyun/cos-go-sdk-v5"
 )
 
-func getCos() *cos.Client {
+func GetCos() *cos.Client {
 	u, _ := url.Parse("https://1037buqieryu-1317065983.cos.ap-shanghai.myqcloud.com") //获取客户端
 	b := &cos.BaseURL{BucketURL: u}
 	c := cos.NewClient(b, &http.Client{
@@ -24,7 +25,7 @@ func getCos() *cos.Client {
 }
 
 func Upload(prefix string, fileName string, file io.Reader) error {
-	c := getCos()
+	c := GetCos()
 	_, err := c.Object.Put(context.Background(), prefix+fileName, file, nil)
 	if err != nil {
 		return err
@@ -33,7 +34,7 @@ func Upload(prefix string, fileName string, file io.Reader) error {
 }
 
 func UploadMutipy(prefix string, files []*multipart.FileHeader) {
-	c := getCos()
+	c := GetCos()
 	// 多线程批量上传文件
 	filesCh := make(chan *multipart.FileHeader, 2)
 	//filePaths := []string{"test1", "test2", "test3"}
@@ -60,7 +61,7 @@ func Mutipy(prefix string, wg *sync.WaitGroup, c *cos.Client, fileCh <-chan *mul
 		}
 		_, err = c.Object.Put(context.Background(), prefix+file.Filename, fd, nil)
 		if err != nil {
-			//ERROR
+			log.Println(err)
 		}
 		fd.Close()
 	}
