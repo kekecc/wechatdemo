@@ -7,6 +7,7 @@ import (
 	databaseuser "wechatdemo/database/user"
 	"wechatdemo/model"
 	"wechatdemo/response"
+	"wechatdemo/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -53,6 +54,22 @@ func Create(c *gin.Context) {
 		response.Failed(c, 400, "content或title未给出", nil)
 		return
 	}
+
+	// upload
+	forms, err := c.MultipartForm()
+	if err != nil {
+		log.Println(err)
+		response.Failed(c, 400, "获取所有图片出错", nil)
+		return
+	}
+
+	files := forms.File["files"] // images
+	utils.UploadMutipy("posts", files)
+
+	for i, file := range files {
+		get_post.Fileids[i] = file.Filename
+	}
+
 	data, err := json.Marshal(get_post.Fileids)
 	if err != nil {
 		response.Failed(c, 400, "转json失败", nil)

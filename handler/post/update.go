@@ -26,6 +26,10 @@ func Update(c *gin.Context) {
 		response.Failed(c, 400, "给定更新参数错误!", err)
 		return
 	}
+	file, err := c.FormFile("file")
+	if err != nil {
+		response.Failed(c, 400, "读取文件错误", err)
+	}
 	var post model.Post
 	log.Println("postid:", jsons["postid"])
 	if jsons["postid"] == 0 || jsons["postid"] == nil {

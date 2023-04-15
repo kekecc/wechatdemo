@@ -5,6 +5,7 @@ import (
 	"wechatdemo/database"
 	"wechatdemo/model"
 	"wechatdemo/response"
+	"wechatdemo/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,11 +17,24 @@ func UpdateUserDetail(c *gin.Context) {
 		response.Failed(c, 400, "参数绑定出现问题", err)
 		return
 	}
-	if json["name"] == nil && json["qq"] == nil && json["wx"] == nil && json["fileid"] == nil {
+	if json["name"] == nil && json["qq"] == nil && json["wx"] == nil {
 		log.Println("参数错误", json)
 		response.Failed(c, 400, "参数错误", nil)
 		return
 	}
+	file, err := c.FormFile("file")
+	if err != nil {
+		log.Println(err)
+		response.Failed(c, 400, "获取头像错误", nil)
+		return
+	}
+	f, _ := file.Open()
+	if err = utils.Upload("avatar", file.Filename, f); err != nil {
+		log.Println(err)
+		response.Failed(c, 400, "上传头像错误", nil)
+		return
+	}
+	defer f.Close()
 	if json["fileid"] != nil {
 		log.Println(json["fileid"])
 	}
