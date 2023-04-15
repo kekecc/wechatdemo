@@ -34,7 +34,9 @@ func UpdateUserDetail(c *gin.Context) {
 		response.Failed(c, 400, "上传头像错误", nil)
 		return
 	}
+	json["fileid"] = file.Filename
 	defer f.Close()
+
 	if json["fileid"] != nil {
 		log.Println(json["fileid"])
 	}
