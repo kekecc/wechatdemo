@@ -56,22 +56,22 @@ func Create(c *gin.Context) {
 	}
 
 	// upload
-	forms, err := c.MultipartForm()
-	if err != nil {
-		log.Println(err)
-		response.Failed(c, 400, "获取所有图片出错", nil)
-		return
-	}
+	// forms, err := c.MultipartForm()
+	// if err != nil {
+	// 	log.Println(err)
+	// 	response.Failed(c, 400, "获取所有图片出错", nil)
+	// 	return
+	// }
 
-	files := forms.File["files"] // images
-	utils.UploadMutipy("posts", files)
+	// files := forms.File["files"] // images
+	// utils.UploadMutipy("posts", files)
 
-	cos := utils.GetCos()
-	for i, file := range files {
-		url := cos.Object.GetObjectURL("posts" + file.Filename)
-		get_post.Fileids[i] = url.String()
-	}
-
+	// cos := utils.GetCos()
+	// for i, file := range files {
+	// 	url := cos.Object.GetObjectURL("posts" + file.Filename)
+	// 	get_post.Fileids[i] = url.String()
+	// }
+	get_post.Fileids = make([]string, 0)
 	data, err := json.Marshal(get_post.Fileids)
 	if err != nil {
 		response.Failed(c, 400, "转json失败", nil)
@@ -90,4 +90,68 @@ func Create(c *gin.Context) {
 	}
 	log.Println("创建帖子", post)
 	response.Success(c, 200, "创建帖子成功", post)
+}
+
+func UploadImage(c *gin.Context) {
+	id := c.PostForm("postid")
+	if id == "" {
+		log.Println("上传图片但是帖子id为空")
+		response.Failed(c, 400, "未获取到postid", nil)
+	}
+
+	file, err := c.FormFile("file")
+	if err != nil {
+		log.Println("未获取到file")
+		response.Failed(c, 400, "未获取到file", err)
+		return
+	}
+
+	userId := c.GetUint("user")
+	db := database.Get()
+
+	var post model.Post
+	if err := db.Model(&model.Post{}).Where("id = ?", id).First(&post).Error; err != nil {
+		log.Println("获取post出错", err)
+		response.Failed(c, 400, "获取帖子出错", err)
+		return
+	}
+
+	// exist
+	if post.UserId != userId {
+		log.Println("用户和帖子不对应")
+		response.Failed(c, 400, "用户帖子不对应", nil)
+		return
+	}
+
+	var ids []string
+	if post.FileId != "" {
+		err := json.Unmarshal([]byte(post.FileId), &ids)
+		if err != nil {
+			log.Println("解析json出错!", err)
+		}
+	} else {
+		ids = append(ids, "")
+	}
+
+	f, _ := file.Open()
+	if err = utils.Upload("post", file.Filename, f); err != nil {
+		log.Println(err)
+		response.Failed(c, 400, "上传头像错误", nil)
+		return
+	}
+	f.Close()
+
+	cos := utils.GetCos()
+	_url := cos.Object.GetObjectURL("post" + file.Filename)
+
+	ids = append(ids, _url.String())
+
+	data, err := json.Marshal(ids)
+	if err != nil {
+		response.Failed(c, 400, "转json失败", nil)
+		return
+	}
+
+	db.Model(&model.Post{}).Where("id = ?", id).Update("fileid", string(data))
+	response.Success(c, 200, "上传图片成功", nil)
 }

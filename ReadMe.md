@@ -49,7 +49,7 @@ docker run -p 3000:3000 --link mysql:mysql project
 // 利用--link，项目中指定 ip:port为 mysql:3306 即可连接到mysql
 ```
 
-5. 如果nginx配置好了域名，便可以访问了。
+5. 如果nginx配置好了域名，便可以访问了，否则ip访问。
   
 
   

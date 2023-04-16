@@ -33,6 +33,7 @@ func InitRoute() *gin.Engine {
 		post.GET("/getPostsList", posts.GetPostList)
 		post.Use(middle.AuthJWT())
 		post.POST("/create", posts.Create)
+		post.POST("/uploadImage", posts.UploadImage)
 		post.PUT("/update", posts.Update)
 		post.DELETE("/delete", posts.Delete)
 		post.POST("/thumb", follows.Thumb)
